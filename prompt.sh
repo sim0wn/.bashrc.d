@@ -1,11 +1,23 @@
-time_stamp() {
-  local TIMESTAMP=$(date "+%d/%m/%y %H:%M:%S")
-  echo $TIMESTAMP
-}
+# ANSI Color Codes
+
+FG_BLUE="\[\e[38;5;32m\]"
+FG_GREEN="\[\e[38;5;34m\]"
+FG_PURPLE="\[\e[0;35m\]"
+FG_YELLOW="\[\e[38;5;220m\]"
+UNDERLINE="\[\e[4m\]"
+RESET="\[\e[0m\]"
 
 parse_git_branch() {
  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /'
 }
 
+export PROMPT_COMMAND=""
 export PROMPT_DIRTRIM=3
-export PS1='\[\e[38;5;34m\]\u\[\e[38;5;220m\]@\[\e[38;5;32m\]\h\[\e[0m\] \[\e[38;5;251;4m\]\w\[\e[0m\] [$(time_stamp)]\n$(parse_git_branch)\[\e[38;5;129;1m\]\$\[\e[0m\] '
+
+# PS1 Variable
+
+PS1="┌─$FG_GREEN\u$FG_YELLOW@$FG_BLUE\h$RESET $UNDERLINE\w$RESET [\t]"
+PS1+="\n"
+PS1+="└─\$(parse_git_branch)$FG_PURPLE\$$RESET "
+
+export PS1
